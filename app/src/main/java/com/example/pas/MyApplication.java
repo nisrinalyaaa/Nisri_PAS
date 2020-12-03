@@ -2,19 +2,17 @@ package com.example.pas;
 
 import android.app.Application;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class MyApplication extends Application {
     @Override
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
 
         Realm.init(this);
         RealmConfiguration configuration = new RealmConfiguration.Builder()
-                .name("movie.db")
+                .name("football")
                 .schemaVersion(0)
                 .build();
         Realm.setDefaultConfiguration(configuration);

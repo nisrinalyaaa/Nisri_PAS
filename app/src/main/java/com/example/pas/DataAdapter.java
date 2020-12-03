@@ -1,5 +1,4 @@
 package com.example.pas;
-
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -16,11 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DatakuViewHolder> {
+public class
+DataAdapter extends RecyclerView.Adapter<DataAdapter.DatakuViewHolder> {
     private ArrayList<Model> dataList;
     private Callback callback;
     View viewku;
@@ -47,11 +47,12 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DatakuViewHold
 
     @Override
     public void onBindViewHolder(final DatakuViewHolder holder, final int position) {
-        holder.txtNama.setText(dataList.get(position).getStrTeam());
-        Log.d("makananku", "onBindViewHolder: "+dataList.get(position).getStrTeamBadge());
+        holder.txtNama.setText(dataList.get(position).getstrTeam());
+        holder.txtNpm.setText(dataList.get(position).getstrLeague());
+        Log.d("makananku", "onBindViewHolder: "+dataList.get(position).getstrTeamBadge());
         //pakai glide karena untuk nampilkan data gambar dari URL / permission / graddle
         Glide.with(holder.itemView)
-                .load(dataList.get(position).getStrTeamBadge())
+                .load(dataList.get(position).getstrTeamBadge())
                 //.override(Target.SIZE_ORIGINAL)
                 .apply(new RequestOptions().override(600, 200))
                 .placeholder(R.mipmap.ic_launcher)

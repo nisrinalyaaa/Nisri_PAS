@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (txtusername.getText().toString().equalsIgnoreCase("admin")
-                        && txtpassword.getText().toString().equalsIgnoreCase("admin")){
+                if (txtusername.getText().toString().equalsIgnoreCase("alya")
+                        && txtpassword.getText().toString().equalsIgnoreCase("cantik")){
                     //saving ke SP
                     editor = pref.edit();
                     editor.putString("username", txtusername.getText().toString());

@@ -1,12 +1,17 @@
 package com.example.pas;
 
-public class Model {
-    //https://image.tmdb.org/t/p/w500/k68nPLbIST6NP96JmTxmZijEvCA.jpg
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class ModelRealm extends RealmObject {
+    @PrimaryKey
+    int idTeam;
     String strTeam;
     String strLeague;
     String strTeamBadge;
     String strDescriptionEN;
-    int idTeam;
+
 
     public int getidTeam() {
         return idTeam;
@@ -21,7 +26,7 @@ public class Model {
     }
 
     public void setstrTeam(String strTeam) {
-        this.strTeam = strTeam;
+        this.strTeam =strTeam;
     }
 
     public String getstrLeague() {
@@ -48,5 +53,5 @@ public class Model {
     public void setstrDescriptionEN(String  strDescriptionEN) {
         this.strDescriptionEN =  strDescriptionEN;
     }
-
 }
+

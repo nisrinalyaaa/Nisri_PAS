@@ -1,15 +1,17 @@
 package com.example.pas;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -23,28 +25,32 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ListData extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private DataAdapter adapter;
-    private ArrayList<Model> DataArrayList; //kit add kan ke adapter
-    private ImageView tambah_data;
+    TextView tvnodata;
     ProgressDialog dialog;
+    RecyclerView recyclerView;
+    DataAdapter adapter;
+    ArrayList<Model> DataArrayList; //kit add kan ke adapter
+    ImageView tambah_data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_data);
         recyclerView = (RecyclerView) findViewById(R.id.rvdata);
+        dialog = new ProgressDialog(ListData.this);
+        tvnodata = (TextView) findViewById(R.id.tvnodata);
+        tvnodata.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
         //addData();
         addDataOnline();
     }
 
-    //get data online
-
-
-
 
     void addDataOnline(){
-        dialog.setMessage("Tunggu Sabentar yak");
+        //kasih loading
+        dialog.setMessage("Sedang memproses data");
         dialog.show();
+        // background process
         AndroidNetworking.get("https://www.thesportsdb.com/api/v1/json/1/search_all_teams.php?l=English%20Premier%20League")
                 .setTag("test")
                 .setPriority(Priority.LOW)
@@ -64,12 +70,11 @@ public class ListData extends AppCompatActivity {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 modelku = new Model();
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                modelku.setIdTeam(jsonObject.getInt("idTeam"));
-                                modelku.setStrTeam(jsonObject.getString("strTeam"));
-                                modelku.setStrDescriptionEN(jsonObject.getString("strDescriptionEN"));
-                                modelku.setStrStadium(jsonObject.getString("strStadium"));
-                                modelku.setStrStadiumThumb(jsonObject.getString("strStadiumThumb"));
-                                modelku.setStrTeamBadge(jsonObject.getString("strTeamBadge"));
+                                modelku.setidTeam(jsonObject.getInt("idTeam"));
+                                modelku.setstrTeam(jsonObject.getString("strTeam"));
+                                modelku.setstrLeague(jsonObject.getString("strLeague"));
+                                modelku.setstrDescriptionEN(jsonObject.getString("strDescriptionEN"));
+                                modelku.setstrTeamBadge(jsonObject.getString("strTeamBadge"));
                                 DataArrayList.add(modelku);
                             }
                             //untuk handle click
@@ -78,14 +83,14 @@ public class ListData extends AppCompatActivity {
                                 public void onClick(int position) {
                                     Model team = DataArrayList.get(position);
                                     Intent intent = new Intent(getApplicationContext(), DetailMovie.class);
+                                    Log.d("teams",team.getstrTeam());
                                     intent.putExtra("id",team.idTeam);
-                                    intent.putExtra("nama",team.strTeam);
-                                    intent.putExtra("stadion",team.strStadium);
-                                    intent.putExtra("foto stadion", team.strStadiumThumb);
+                                    intent.putExtra("Team",team.getstrTeam());
+                                    intent.putExtra("liga",team.getstrLeague());
                                     intent.putExtra("deskripsi",team.strDescriptionEN);
-                                    intent.putExtra("logo",team.strTeamBadge);
+                                    intent.putExtra("poster",team.strTeamBadge);
                                     startActivity(intent);
-                                    Toast.makeText(ListData.this, ""+position, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(ListData.this, ""+position, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -96,8 +101,14 @@ public class ListData extends AppCompatActivity {
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ListData.this);
                             recyclerView.setLayoutManager(layoutManager);
                             recyclerView.setAdapter(adapter);
+                            if (dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            if (dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
                         }
 
                     }
